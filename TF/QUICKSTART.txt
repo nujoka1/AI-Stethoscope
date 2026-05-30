@@ -1,0 +1,39 @@
+================================================================================
+ESP32 AI STETHOSCOPE - QUICKSTART GUIDE (DAY 1 EVENING)
+================================================================================
+
+CRITICAL SITUATION:
+  Your INT8 model is 4 MB but ESP32 can only hold ~2 MB.
+  Solution: Extract classifier-only model (~80 KB).
+
+TIME NEEDED: 2 hours
+
+STEPS:
+
+1. RUN EXTRACTION SCRIPT:
+   python3 extract_classifier_for_esp32.py
+
+2. VERIFY MODEL SIZE:
+   ls -lh classifier_optimized_esp32/
+   → Should see: heart_sound_classifier_int8.tflite (~80-100 KB) ✅
+
+3. TEST MODEL WORKS:
+   Create test_classifier.py (see 00_IMMEDIATE_ACTION_ITEMS.md)
+   python3 test_classifier.py
+
+4. CHECK ACCURACY:
+   Verify quantized model preserves > 85% accuracy
+
+5. DONE:
+   You now have a model ready for ESP32!
+   → heart_sound_classifier_int8.tflite
+   → heart_sound_classifier_model.h (C header)
+
+NEXT: Hardware setup + firmware scaffolding (Day 2)
+
+For detailed instructions, read: 00_IMMEDIATE_ACTION_ITEMS.md
+For full project plan, read: 03_REVISED_7DAY_SPRINT.md
+
+Questions? Check CRITICAL_MODEL_ANALYSIS.md for technical details.
+
+================================================================================

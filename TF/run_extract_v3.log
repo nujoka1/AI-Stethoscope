@@ -1,0 +1,199 @@
+2026-05-21 19:24:34.696511: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2026-05-21 19:24:34.823710: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-05-21 19:24:40.391719: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2026-05-21 19:24:46.647437: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+
+======================================================================
+ESP32 CLASSIFIER EXTRACTION & OPTIMIZATION
+======================================================================
+[*] Auto-selected SavedModel: ./dogs_and_cats_yamnet_test
+======================================================================
+STEP 1: INSPECTING SAVED MODEL STRUCTURE
+======================================================================
+
+[*] Loaded model from: ./dogs_and_cats_yamnet_test
+[*] Available signatures: ['serve', 'serving_default']
+
+[*] Serving function signature:
+    Inputs: ((), {'audio': TensorSpec(shape=(None, None), dtype=tf.float32, name='audio')})
+    Outputs: {'output_0': TensorSpec(shape=(5,), dtype=tf.float32, name='output_0')}
+
+[*] Testing with dummy audio input...
+    Input shape: (80000,)
+    Output 'output_0' shape: (5,)
+    Output 'output_0' type: <dtype: 'float32'>
+
+======================================================================
+STEP 2: EXTRACTING CLASSIFIER WEIGHTS FROM TRAINED MODEL
+======================================================================
+
+[*] Analyzing model graph...
+    Num variables: 114
+    [0] layer1/conv/kernel:0                     Shape: (3, 3, 1, 32)        Dtype: <dtype: 'float32'>
+    [1] layer1/conv/bn/beta:0                    Shape: (32,)                Dtype: <dtype: 'float32'>
+    [2] layer1/conv/bn/moving_mean:0             Shape: (32,)                Dtype: <dtype: 'float32'>
+    [3] layer1/conv/bn/moving_variance:0         Shape: (32,)                Dtype: <dtype: 'float32'>
+    [4] layer2/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 32, 1)        Dtype: <dtype: 'float32'>
+    [5] layer2/depthwise_conv/bn/beta:0          Shape: (32,)                Dtype: <dtype: 'float32'>
+    [6] layer2/depthwise_conv/bn/moving_mean:0   Shape: (32,)                Dtype: <dtype: 'float32'>
+    [7] layer2/depthwise_conv/bn/moving_variance:0 Shape: (32,)                Dtype: <dtype: 'float32'>
+    [8] layer2/pointwise_conv/kernel:0           Shape: (1, 1, 32, 64)       Dtype: <dtype: 'float32'>
+    [9] layer2/pointwise_conv/bn/beta:0          Shape: (64,)                Dtype: <dtype: 'float32'>
+    [10] layer2/pointwise_conv/bn/moving_mean:0   Shape: (64,)                Dtype: <dtype: 'float32'>
+    [11] layer2/pointwise_conv/bn/moving_variance:0 Shape: (64,)                Dtype: <dtype: 'float32'>
+    [12] layer3/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 64, 1)        Dtype: <dtype: 'float32'>
+    [13] layer3/depthwise_conv/bn/beta:0          Shape: (64,)                Dtype: <dtype: 'float32'>
+    [14] layer3/depthwise_conv/bn/moving_mean:0   Shape: (64,)                Dtype: <dtype: 'float32'>
+    [15] layer3/depthwise_conv/bn/moving_variance:0 Shape: (64,)                Dtype: <dtype: 'float32'>
+    [16] layer3/pointwise_conv/kernel:0           Shape: (1, 1, 64, 128)      Dtype: <dtype: 'float32'>
+    [17] layer3/pointwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [18] layer3/pointwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [19] layer3/pointwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [20] layer4/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 128, 1)       Dtype: <dtype: 'float32'>
+    [21] layer4/depthwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [22] layer4/depthwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [23] layer4/depthwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [24] layer4/pointwise_conv/kernel:0           Shape: (1, 1, 128, 128)     Dtype: <dtype: 'float32'>
+    [25] layer4/pointwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [26] layer4/pointwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [27] layer4/pointwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [28] layer5/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 128, 1)       Dtype: <dtype: 'float32'>
+    [29] layer5/depthwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [30] layer5/depthwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [31] layer5/depthwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [32] layer5/pointwise_conv/kernel:0           Shape: (1, 1, 128, 256)     Dtype: <dtype: 'float32'>
+    [33] layer5/pointwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [34] layer5/pointwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [35] layer5/pointwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [36] layer6/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 256, 1)       Dtype: <dtype: 'float32'>
+    [37] layer6/depthwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [38] layer6/depthwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [39] layer6/depthwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [40] layer6/pointwise_conv/kernel:0           Shape: (1, 1, 256, 256)     Dtype: <dtype: 'float32'>
+    [41] layer6/pointwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [42] layer6/pointwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [43] layer6/pointwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [44] layer7/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 256, 1)       Dtype: <dtype: 'float32'>
+    [45] layer7/depthwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [46] layer7/depthwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [47] layer7/depthwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [48] layer7/pointwise_conv/kernel:0           Shape: (1, 1, 256, 512)     Dtype: <dtype: 'float32'>
+    [49] layer7/pointwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [50] layer7/pointwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [51] layer7/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [52] layer8/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [53] layer8/depthwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [54] layer8/depthwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [55] layer8/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [56] layer8/pointwise_conv/kernel:0           Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [57] layer8/pointwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [58] layer8/pointwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [59] layer8/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [60] layer9/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [61] layer9/depthwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [62] layer9/depthwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [63] layer9/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [64] layer9/pointwise_conv/kernel:0           Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [65] layer9/pointwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [66] layer9/pointwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [67] layer9/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [68] layer10/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [69] layer10/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [70] layer10/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [71] layer10/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [72] layer10/pointwise_conv/kernel:0          Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [73] layer10/pointwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [74] layer10/pointwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [75] layer10/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [76] layer11/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [77] layer11/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [78] layer11/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [79] layer11/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [80] layer11/pointwise_conv/kernel:0          Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [81] layer11/pointwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [82] layer11/pointwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [83] layer11/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [84] layer12/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [85] layer12/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [86] layer12/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [87] layer12/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [88] layer12/pointwise_conv/kernel:0          Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [89] layer12/pointwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [90] layer12/pointwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [91] layer12/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [92] layer13/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [93] layer13/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [94] layer13/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [95] layer13/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [96] layer13/pointwise_conv/kernel:0          Shape: (1, 1, 512, 1024)    Dtype: <dtype: 'float32'>
+    [97] layer13/pointwise_conv/bn/beta:0         Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [98] layer13/pointwise_conv/bn/moving_mean:0  Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [99] layer13/pointwise_conv/bn/moving_variance:0 Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [100] layer14/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 1024, 1)      Dtype: <dtype: 'float32'>
+    [101] layer14/depthwise_conv/bn/beta:0         Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [102] layer14/depthwise_conv/bn/moving_mean:0  Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [103] layer14/depthwise_conv/bn/moving_variance:0 Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [104] layer14/pointwise_conv/kernel:0          Shape: (1, 1, 1024, 1024)   Dtype: <dtype: 'float32'>
+    [105] layer14/pointwise_conv/bn/beta:0         Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [106] layer14/pointwise_conv/bn/moving_mean:0  Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [107] layer14/pointwise_conv/bn/moving_variance:0 Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [108] dense/kernel:0                           Shape: (1024, 521)          Dtype: <dtype: 'float32'>
+    [109] dense/bias:0                             Shape: (521,)               Dtype: <dtype: 'float32'>
+    [110] my_model/dense/kernel:0                  Shape: (1024, 512)          Dtype: <dtype: 'float32'>
+    [111] my_model/dense/bias:0                    Shape: (512,)               Dtype: <dtype: 'float32'>
+    [112] my_model/dense_1/kernel:0                Shape: (512, 5)             Dtype: <dtype: 'float32'>
+    [113] my_model/dense_1/bias:0                  Shape: (5,)                 Dtype: <dtype: 'float32'>
+
+[✓] Found 3 weight matrices
+[✓] Found 3 bias vectors
+
+======================================================================
+STEP 3: CREATING LIGHTWEIGHT CLASSIFIER MODEL
+======================================================================
+
+[✓] Lightweight classifier created:
+Model: "heart_sound_classifier"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━
+┃ Layer (type)                    ┃ Output Shape       
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━
+│ dense_1 (Dense)                 │ (None, 512)        
+├─────────────────────────────────┼────────────────────
+│ logits (Dense)                  │ (None, 5)          
+└─────────────────────────────────┴────────────────────
+ Total params: 527,365 (2.01 MB)
+ Trainable params: 527,365 (2.01 MB)
+ Non-trainable params: 0 (0.00 B)
+Traceback (most recent call last):
+  File "/home/nujoka/Documents/Project-Store/500l_projects/Smart_Health_Ecosystem/AI-Stethoscope/TF/extract_classifier_for_esp32.py", line 440, in main
+    tflite_path = quantize_classifier_model(classifier, output_dir)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nujoka/Documents/Project-Store/500l_projects/Smart_Health_Ecosystem/AI-Stethoscope/TF/extract_classifier_for_esp32.py", line 269, in quantize_classifier_model
+    tflite_quant_model = converter.convert()
+                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/nujoka/yoloenv/lib/python3.11/site-packages/tensorflow/lite/python/lite.py", line 1254, in wrapper
+    return self._convert_and_export_metrics(convert_func, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nujoka/yoloenv/lib/python3.11/site-packages/tensorflow/lite/python/lite.py", line 1204, in _convert_and_export_metrics
+    self._save_conversion_params_metric()
+  File "/home/nujoka/yoloenv/lib/python3.11/site-packages/tensorflow/lite/python/lite.py", line 1026, in _save_conversion_params_metric
+    quant_mode = QuantizationMode(
+                 ^^^^^^^^^^^^^^^^^
+  File "/home/nujoka/yoloenv/lib/python3.11/site-packages/tensorflow/lite/python/lite.py", line 278, in __init__
+    self._validate_int8_required()
+  File "/home/nujoka/yoloenv/lib/python3.11/site-packages/tensorflow/lite/python/lite.py", line 510, in _validate_int8_required
+    raise ValueError(
+ValueError: For full integer quantization, a `representative_dataset` must be specified.
+
+======================================================================
+STEP 4: TRANSFERRING WEIGHTS TO NEW MODEL
+======================================================================
+[!] Weight transfer error: '_WrapperFunction' object has no attribute 'concrete_function'
+[*] Proceeding with uninitialized model
+
+======================================================================
+STEP 5: QUANTIZING CLASSIFIER MODEL TO INT8
+======================================================================
+[*] Converting to TFLite with INT8 quantization...
+
+[!] FATAL ERROR: For full integer quantization, a `representative_dataset` must be specified.

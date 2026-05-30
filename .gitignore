@@ -1,0 +1,2 @@
+.env         # Prevents Python/node environment variables with credentials
+config.js    # Prevents hardcoded MQTT configuration from being exposed

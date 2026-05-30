@@ -1,0 +1,11 @@
+HEART SOUND MODEL QUANTIZATION REPORT
+======================================================================
+Generated: 2026-05-21T16:13:56.147174
+
+Float32 Model: 14644.59 KB
+INT8 Model: 3996.96 KB
+Compression Ratio: 3.66x
+
+Classes: AS, MR, MS, MVP, N
+Input: raw mono audio waveform (16 kHz, float32)
+Pipeline: YAMNet embeddings (1024) → Dense(512) → Dense(5) → reduce_mean

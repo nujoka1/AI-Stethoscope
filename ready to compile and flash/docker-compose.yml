@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2-latest
+    container_name: ai-stethoscope-mqtt
+    ports:
+      - "1883:1883"  # TCP
+      - "8080:8080"  # WebSocket for Dashboard
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_logs:/mosquitto/log
+    environment:
+      TZ: UTC
+    restart: unless-stopped
+
+volumes:
+  mosquitto_data:
+  mosquitto_logs:

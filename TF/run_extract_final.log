@@ -1,0 +1,253 @@
+2026-05-21 19:25:27.324995: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2026-05-21 19:25:27.430873: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-05-21 19:25:31.969242: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2026-05-21 19:25:36.974723: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+
+======================================================================
+ESP32 CLASSIFIER EXTRACTION & OPTIMIZATION
+======================================================================
+[*] Auto-selected SavedModel: ./dogs_and_cats_yamnet_test
+======================================================================
+STEP 1: INSPECTING SAVED MODEL STRUCTURE
+======================================================================
+
+[*] Loaded model from: ./dogs_and_cats_yamnet_test
+[*] Available signatures: ['serve', 'serving_default']
+
+[*] Serving function signature:
+    Inputs: ((), {'audio': TensorSpec(shape=(None, None), dtype=tf.float32, name='audio')})
+    Outputs: {'output_0': TensorSpec(shape=(5,), dtype=tf.float32, name='output_0')}
+
+[*] Testing with dummy audio input...
+    Input shape: (80000,)
+    Output 'output_0' shape: (5,)
+    Output 'output_0' type: <dtype: 'float32'>
+
+======================================================================
+STEP 2: EXTRACTING CLASSIFIER WEIGHTS FROM TRAINED MODEL
+======================================================================
+
+[*] Analyzing model graph...
+    Num variables: 114
+    [0] layer1/conv/kernel:0                     Shape: (3, 3, 1, 32)        Dtype: <dtype: 'float32'>
+    [1] layer1/conv/bn/beta:0                    Shape: (32,)                Dtype: <dtype: 'float32'>
+    [2] layer1/conv/bn/moving_mean:0             Shape: (32,)                Dtype: <dtype: 'float32'>
+    [3] layer1/conv/bn/moving_variance:0         Shape: (32,)                Dtype: <dtype: 'float32'>
+    [4] layer2/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 32, 1)        Dtype: <dtype: 'float32'>
+    [5] layer2/depthwise_conv/bn/beta:0          Shape: (32,)                Dtype: <dtype: 'float32'>
+    [6] layer2/depthwise_conv/bn/moving_mean:0   Shape: (32,)                Dtype: <dtype: 'float32'>
+    [7] layer2/depthwise_conv/bn/moving_variance:0 Shape: (32,)                Dtype: <dtype: 'float32'>
+    [8] layer2/pointwise_conv/kernel:0           Shape: (1, 1, 32, 64)       Dtype: <dtype: 'float32'>
+    [9] layer2/pointwise_conv/bn/beta:0          Shape: (64,)                Dtype: <dtype: 'float32'>
+    [10] layer2/pointwise_conv/bn/moving_mean:0   Shape: (64,)                Dtype: <dtype: 'float32'>
+    [11] layer2/pointwise_conv/bn/moving_variance:0 Shape: (64,)                Dtype: <dtype: 'float32'>
+    [12] layer3/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 64, 1)        Dtype: <dtype: 'float32'>
+    [13] layer3/depthwise_conv/bn/beta:0          Shape: (64,)                Dtype: <dtype: 'float32'>
+    [14] layer3/depthwise_conv/bn/moving_mean:0   Shape: (64,)                Dtype: <dtype: 'float32'>
+    [15] layer3/depthwise_conv/bn/moving_variance:0 Shape: (64,)                Dtype: <dtype: 'float32'>
+    [16] layer3/pointwise_conv/kernel:0           Shape: (1, 1, 64, 128)      Dtype: <dtype: 'float32'>
+    [17] layer3/pointwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [18] layer3/pointwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [19] layer3/pointwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [20] layer4/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 128, 1)       Dtype: <dtype: 'float32'>
+    [21] layer4/depthwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [22] layer4/depthwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [23] layer4/depthwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [24] layer4/pointwise_conv/kernel:0           Shape: (1, 1, 128, 128)     Dtype: <dtype: 'float32'>
+    [25] layer4/pointwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [26] layer4/pointwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [27] layer4/pointwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [28] layer5/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 128, 1)       Dtype: <dtype: 'float32'>
+    [29] layer5/depthwise_conv/bn/beta:0          Shape: (128,)               Dtype: <dtype: 'float32'>
+    [30] layer5/depthwise_conv/bn/moving_mean:0   Shape: (128,)               Dtype: <dtype: 'float32'>
+    [31] layer5/depthwise_conv/bn/moving_variance:0 Shape: (128,)               Dtype: <dtype: 'float32'>
+    [32] layer5/pointwise_conv/kernel:0           Shape: (1, 1, 128, 256)     Dtype: <dtype: 'float32'>
+    [33] layer5/pointwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [34] layer5/pointwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [35] layer5/pointwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [36] layer6/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 256, 1)       Dtype: <dtype: 'float32'>
+    [37] layer6/depthwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [38] layer6/depthwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [39] layer6/depthwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [40] layer6/pointwise_conv/kernel:0           Shape: (1, 1, 256, 256)     Dtype: <dtype: 'float32'>
+    [41] layer6/pointwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [42] layer6/pointwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [43] layer6/pointwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [44] layer7/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 256, 1)       Dtype: <dtype: 'float32'>
+    [45] layer7/depthwise_conv/bn/beta:0          Shape: (256,)               Dtype: <dtype: 'float32'>
+    [46] layer7/depthwise_conv/bn/moving_mean:0   Shape: (256,)               Dtype: <dtype: 'float32'>
+    [47] layer7/depthwise_conv/bn/moving_variance:0 Shape: (256,)               Dtype: <dtype: 'float32'>
+    [48] layer7/pointwise_conv/kernel:0           Shape: (1, 1, 256, 512)     Dtype: <dtype: 'float32'>
+    [49] layer7/pointwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [50] layer7/pointwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [51] layer7/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [52] layer8/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [53] layer8/depthwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [54] layer8/depthwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [55] layer8/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [56] layer8/pointwise_conv/kernel:0           Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [57] layer8/pointwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [58] layer8/pointwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [59] layer8/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [60] layer9/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [61] layer9/depthwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [62] layer9/depthwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [63] layer9/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [64] layer9/pointwise_conv/kernel:0           Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [65] layer9/pointwise_conv/bn/beta:0          Shape: (512,)               Dtype: <dtype: 'float32'>
+    [66] layer9/pointwise_conv/bn/moving_mean:0   Shape: (512,)               Dtype: <dtype: 'float32'>
+    [67] layer9/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [68] layer10/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [69] layer10/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [70] layer10/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [71] layer10/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [72] layer10/pointwise_conv/kernel:0          Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [73] layer10/pointwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [74] layer10/pointwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [75] layer10/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [76] layer11/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [77] layer11/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [78] layer11/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [79] layer11/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [80] layer11/pointwise_conv/kernel:0          Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [81] layer11/pointwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [82] layer11/pointwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [83] layer11/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [84] layer12/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [85] layer12/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [86] layer12/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [87] layer12/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [88] layer12/pointwise_conv/kernel:0          Shape: (1, 1, 512, 512)     Dtype: <dtype: 'float32'>
+    [89] layer12/pointwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [90] layer12/pointwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [91] layer12/pointwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [92] layer13/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 512, 1)       Dtype: <dtype: 'float32'>
+    [93] layer13/depthwise_conv/bn/beta:0         Shape: (512,)               Dtype: <dtype: 'float32'>
+    [94] layer13/depthwise_conv/bn/moving_mean:0  Shape: (512,)               Dtype: <dtype: 'float32'>
+    [95] layer13/depthwise_conv/bn/moving_variance:0 Shape: (512,)               Dtype: <dtype: 'float32'>
+    [96] layer13/pointwise_conv/kernel:0          Shape: (1, 1, 512, 1024)    Dtype: <dtype: 'float32'>
+    [97] layer13/pointwise_conv/bn/beta:0         Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [98] layer13/pointwise_conv/bn/moving_mean:0  Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [99] layer13/pointwise_conv/bn/moving_variance:0 Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [100] layer14/depthwise_conv/depthwise_kernel:0 Shape: (3, 3, 1024, 1)      Dtype: <dtype: 'float32'>
+    [101] layer14/depthwise_conv/bn/beta:0         Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [102] layer14/depthwise_conv/bn/moving_mean:0  Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [103] layer14/depthwise_conv/bn/moving_variance:0 Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [104] layer14/pointwise_conv/kernel:0          Shape: (1, 1, 1024, 1024)   Dtype: <dtype: 'float32'>
+    [105] layer14/pointwise_conv/bn/beta:0         Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [106] layer14/pointwise_conv/bn/moving_mean:0  Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [107] layer14/pointwise_conv/bn/moving_variance:0 Shape: (1024,)              Dtype: <dtype: 'float32'>
+    [108] dense/kernel:0                           Shape: (1024, 521)          Dtype: <dtype: 'float32'>
+    [109] dense/bias:0                             Shape: (521,)               Dtype: <dtype: 'float32'>
+    [110] my_model/dense/kernel:0                  Shape: (1024, 512)          Dtype: <dtype: 'float32'>
+    [111] my_model/dense/bias:0                    Shape: (512,)               Dtype: <dtype: 'float32'>
+    [112] my_model/dense_1/kernel:0                Shape: (512, 5)             Dtype: <dtype: 'float32'>
+    [113] my_model/dense_1/bias:0                  Shape: (5,)                 Dtype: <dtype: 'float32'>
+
+[✓] Found 3 weight matrices
+[✓] Found 3 bias vectors
+
+======================================================================
+STEP 3: CREATING LIGHTWEIGHT CLASSIFIER MODEL
+======================================================================
+
+[✓] Lightweight classifier created:
+Model: "heart_sound_classifier"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━
+┃ Layer (type)                    ┃ Output Shape       
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━
+│ dense_1 (Dense)                 │ (None, 512)        
+├─────────────────────────────────┼────────────────────
+│ logits (Dense)                  │ (None, 5)          
+└─────────────────────────────────┴────────────────────
+ Total params: 527,365 (2.01 MB)
+ Trainable params: 527,365 (2.01 MB)
+ Non-trainable params: 0 (0.00 B)
+
+======================================================================
+STEP 4: TRANSFERRING WEIGHTS TO NEW MODEL
+======================================================================
+[!] Weight transfer error: '_WrapperFunction' object has no attribute 'concrete_function'
+[*] Proceeding with uninitialized model
+
+======================================================================
+STEP 5: QUANTIZING CLASSIFIER MODEL TO INT8
+======================================================================
+[*] Converting to TFLite with INT8 quantization...
+Saved artifact at '/tmp/tmptgwsfj4j'. The following endpoints are available:
+
+* Endpoint 'serve'
+  args_0 (POSITIONAL_ONLY): TensorSpec(shape=(None, 1024), dtype=tf.float32, name='embeddings')
+Output Type:
+  TensorSpec(shape=(None, 5), dtype=tf.float32, name=None)
+Captures:
+  139783183330832: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  139783161592912: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  139783161592144: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  139783161591952: TensorSpec(shape=(), dtype=tf.resource, name=None)
+/home/nujoka/yoloenv/lib/python3.11/site-packages/tensorflow/lite/python/convert.py:863: UserWarning: Statistics for quantized inputs were expected, but not specified; continuing anyway.
+  warnings.warn(
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+W0000 00:00:1779387941.306478 1181430 tf_tfl_flatbuffer_helpers.cc:364] Ignored output_format.
+W0000 00:00:1779387941.307216 1181430 tf_tfl_flatbuffer_helpers.cc:367] Ignored drop_control_dependency.
+2026-05-21 19:25:41.308239: I tensorflow/cc/saved_model/reader.cc:83] Reading SavedModel from: /tmp/tmptgwsfj4j
+2026-05-21 19:25:41.308856: I tensorflow/cc/saved_model/reader.cc:52] Reading meta graph with tags { serve }
+2026-05-21 19:25:41.308880: I tensorflow/cc/saved_model/reader.cc:147] Reading SavedModel debug info (if present) from: /tmp/tmptgwsfj4j
+I0000 00:00:1779387941.313308 1181430 mlir_graph_optimization_pass.cc:437] MLIR V1 optimization pass is not enabled
+2026-05-21 19:25:41.314214: I tensorflow/cc/saved_model/loader.cc:236] Restoring SavedModel bundle.
+2026-05-21 19:25:41.355359: I tensorflow/cc/saved_model/loader.cc:220] Running initialization op on SavedModel bundle at path: /tmp/tmptgwsfj4j
+2026-05-21 19:25:41.365415: I tensorflow/cc/saved_model/loader.cc:471] SavedModel load for tags { serve }; Status: success: OK. Took 57183 microseconds.
+2026-05-21 19:25:41.460737: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+fully_quantize: 0, inference_type: 6, input_inference_type: FLOAT32, output_inference_type: FLOAT32
+2026-05-21 19:25:42.108270: W tensorflow/compiler/mlir/lite/flatbuffer_export.cc:3705] Skipping runtime version metadata in the model. This will be generated by the exporter.
+/home/nujoka/yoloenv/lib/python3.11/site-packages/tensorflow/lite/python/interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+
+[✓] Quantized model saved: ./classifier_optimized_esp32/heart_sound_classifier_int8.tflite
+    Size: 522.34 KB
+[!] WARNING: Model size is still large, further optimization needed
+
+======================================================================
+STEP 6: GENERATING C HEADER FOR ESP32 FIRMWARE
+======================================================================
+[✓] C header generated: ./classifier_optimized_esp32/heart_sound_classifier_model.h
+    Include in ESP32 firmware as: #include "heart_sound_classifier_model.h"
+
+======================================================================
+STEP 7: VALIDATING TFLITE MODEL
+======================================================================
+
+[*] Input details:
+    Name: serving_default_embeddings:0
+    Shape: [   1 1024]
+    Type: <class 'numpy.float32'>
+
+[*] Output details:
+    Name: StatefulPartitionedCall_1:0
+    Shape: [1 5]
+    Type: <class 'numpy.float32'>
+
+[*] Testing with dummy embedding...
+    Input shape: (1, 1024)
+    Output shape: (1, 5)
+    Output values (logits): [[-0.28374153 -0.82655144  0.8142148   0.6538392   0.25906837]]
+[✓] Predicted class: MS (confidence: 33.86%)
+
+======================================================================
+✓ EXTRACTION & OPTIMIZATION COMPLETE
+======================================================================
+
+Output files:
+  1. ./classifier_optimized_esp32/heart_sound_classifier_int8.tflite
+  2. ./classifier_optimized_esp32/heart_sound_classifier_model.h
+
+Next steps:
+  1. Copy the C header to your ESP32 firmware
+  2. Update your firmware to use the lightweight model
+  3. Test inference with YAMNet-generated embeddings

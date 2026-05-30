@@ -1,0 +1,38 @@
+2026-05-21 19:23:30.032181: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2026-05-21 19:23:30.143555: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-05-21 19:23:35.918662: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+2026-05-21 19:23:41.435023: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+Traceback (most recent call last):
+  File "/home/nujoka/Documents/Project-Store/500l_projects/Smart_Health_Ecosystem/AI-Stethoscope/TF/extract_classifier_for_esp32.py", line 408, in main
+    weights, biases = extract_classifier_weights(saved_model_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nujoka/Documents/Project-Store/500l_projects/Smart_Health_Ecosystem/AI-Stethoscope/TF/extract_classifier_for_esp32.py", line 113, in extract_classifier_weights
+    concrete_fn = serving_fn.concrete_function
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: '_WrapperFunction' object has no attribute 'concrete_function'
+
+======================================================================
+ESP32 CLASSIFIER EXTRACTION & OPTIMIZATION
+======================================================================
+[*] Auto-selected SavedModel: ./dogs_and_cats_yamnet_test
+======================================================================
+STEP 1: INSPECTING SAVED MODEL STRUCTURE
+======================================================================
+
+[*] Loaded model from: ./dogs_and_cats_yamnet_test
+[*] Available signatures: ['serve', 'serving_default']
+
+[*] Serving function signature:
+    Inputs: ((), {'audio': TensorSpec(shape=(None, None), dtype=tf.float32, name='audio')})
+    Outputs: {'output_0': TensorSpec(shape=(5,), dtype=tf.float32, name='output_0')}
+
+[*] Testing with dummy audio input...
+    Input shape: (80000,)
+    [!] Error: 'dict' object has no attribute 'shape'
+
+======================================================================
+STEP 2: EXTRACTING CLASSIFIER WEIGHTS FROM TRAINED MODEL
+======================================================================
+
+[!] FATAL ERROR: '_WrapperFunction' object has no attribute 'concrete_function'

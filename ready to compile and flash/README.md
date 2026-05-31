@@ -4,7 +4,7 @@ This folder contains a PlatformIO firmware for the ESP32-S3 heart sound classifi
 
 ## What is included
 
-- Audio capture over the ESP32 ADC
+- Audio capture over I2S (INMP441)
 - Proxy embedding generation to match the classifier input shape
 - TensorFlow Lite Micro inference using the embedded 522 KB classifier model
 - Status logging over Serial
@@ -50,12 +50,13 @@ Useful labels include:
 - `hs_latency_ms`
 - `hs_wave_00` through `hs_wave_63`
 
-## Hardware wiring
+-## Hardware wiring
 
 - Audio input: INMP441 digital microphone via I2S
-  - BCLK → GPIO26
-  - WS / LRCK → GPIO25
-  - SD → GPIO35
+  - BCLK (SCK) → GPIO14
+  - WS / LRCK → GPIO9
+  - SD (DOUT) → GPIO8
+ - Note: firmware `src/config.h` and `src/audio_capture.h` are the authoritative source for pin mappings.
 - Battery sense: GPIO1 through a divider if enabled
 - Status LED: uses `LED_BUILTIN` if defined by the board package
 

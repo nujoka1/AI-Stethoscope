@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Stethoscope Dashboard</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>AI Stethoscope Dashboard</h1>
+    <p id="sub">Live audio &amp; inference status</p>
+  </header>
+
+  <main>
+    <section id="connection">
+      <h2>Connection</h2>
+      <p>Broker: <span id="broker"></span></p>
+      <p>Audio topic: <span id="audioTopic"></span></p>
+      <p>Analyse topic: <span id="analyseTopic"></span></p>
+    </section>
+
+    <section id="status">
+      <h2>Last inference</h2>
+      <pre id="last">No data yet.</pre>
+    </section>
+  </main>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
